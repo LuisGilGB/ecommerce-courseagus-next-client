@@ -1,7 +1,11 @@
+import BasicLayout from "../layouts/BasicLayout";
+
 export default function Home() {
   return (
     <div className="home">
-      <h1>Welcome to Next JS</h1>
+      <BasicLayout>
+        <h1>Welcome to Next JS</h1>
+      </BasicLayout>
     </div>
   );
 }
