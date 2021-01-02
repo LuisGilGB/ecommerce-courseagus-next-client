@@ -1,7 +1,13 @@
 .header {
+  height: 112px;
   position: relative;
+  padding: 0;
   box-shadow: 0 -10px 10px 15px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 -10px 10px 15px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 -10px 10px 15px rgba(0, 0, 0, 0.5);
   z-index: 1;
+
+  > div {
+    padding: 0 50px;
+  }
 }

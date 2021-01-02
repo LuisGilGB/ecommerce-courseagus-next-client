@@ -1,0 +1,32 @@
+.nav {
+  height: 48px;
+  background-color: $background-grey-dark;
+
+  .menu {
+    line-height: 48px;
+    background-color: transparent;
+    border: 0;
+
+    .menu-item {
+      color: $font-light;
+      margin: 0;
+      padding: 0 20px;
+      top: 0;
+      border: 0;
+
+      &:hover {
+        color: $font-light;
+        background-color: $background-dark-absolute;
+        border: 0;
+      }
+
+      a {
+        color: $font-light;
+
+        &:hover {
+          color: $font-light;
+        }
+      }
+    }
+  }
+}
