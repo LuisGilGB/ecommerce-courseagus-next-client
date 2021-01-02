@@ -1,4 +1,40 @@
 .top-bar {
-  & .logo-image {
+  .logo-col {
+    padding: 0 16px;
+  }
+  .search-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .search {
+      width: auto;
+
+      .ant-input-wrapper {
+        input {
+          background-color: transparent;
+          border: 0px;
+          border-bottom: 2px solid $primary;
+          color: $primary;
+          width: 160px;
+          transition: width 0.7s;
+
+          &:focus {
+            width: 250px;
+          }
+        }
+      }
+
+      .ant-input-group-addon {
+        background-color: transparent;
+        border: 0px;
+        button.ant-input-search-button:not(.ant-btn-primary) {
+          color: $primary;
+          background-color: transparent;
+          border: 0px;
+          border-bottom: 2px solid $primary;
+        }
+      }
+    }
   }
 }
