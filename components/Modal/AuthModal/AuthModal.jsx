@@ -1,5 +1,6 @@
 import { Button, Form } from "antd";
 import { useCallback, useEffect, useState } from "react";
+import { registerUserRequest } from "../../../api/users";
 import LoginForm from "../../Auth/LoginForm";
 import RegisterForm from "../../Auth/RegisterForm";
 import Modal from "../Modal";
@@ -58,6 +59,7 @@ const AuthModal = (props) => {
       form: loginForm,
       title: "Log in",
       onModeSwitch: onSwitchToRegister,
+      onFinish: () => {},
     },
     REGISTER: {
       FormComponent: RegisterForm,
@@ -65,12 +67,20 @@ const AuthModal = (props) => {
       form: registerForm,
       title: "Register",
       onModeSwitch: onSwitchToLogin,
+      onFinish: (formData) => {
+        registerUserRequest(formData);
+      },
     },
   };
 
-  const { FormComponent, FooterComponent, form, title, onModeSwitch } = CONFIG[
-    registerMode ? "REGISTER" : "LOGIN"
-  ];
+  const {
+    FormComponent,
+    FooterComponent,
+    form,
+    title,
+    onModeSwitch,
+    onFinish,
+  } = CONFIG[registerMode ? "REGISTER" : "LOGIN"];
 
   return (
     <Modal
@@ -110,7 +120,7 @@ const AuthModal = (props) => {
               });
           });
         }}
-        onFinish={(data) => {}}
+        onFinish={onFinish}
       />
     </Modal>
   );

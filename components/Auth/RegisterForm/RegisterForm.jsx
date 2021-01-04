@@ -10,11 +10,11 @@ const RegisterForm = ({ form, ...otherProps }) => {
       >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="lastName" label="Last name" rules={[{ type: "string" }]}>
+      <Form.Item name="lastname" label="Last name" rules={[{ type: "string" }]}>
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item
-        name="user"
+        name="username"
         label="User name"
         rules={[{ required: true, type: "string" }]}
       >
