@@ -22,3 +22,14 @@ export const logInRequest = async (userData) => {
     return err.response;
   }
 };
+
+export const resetPasswordRequest = async (email) => {
+  try {
+    const url = `${SERVER_HOST}/auth/forgot-password`;
+    const res = await axios.post(url, { email });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err.response;
+  }
+};
