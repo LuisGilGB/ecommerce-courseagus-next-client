@@ -2,10 +2,11 @@ import "antd/dist/antd.css";
 import "../scss/global.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "../context/AuthContext";
 
 export default function MyApp({ Component, pageProps }) {
   return (
-    <>
+    <AuthProvider>
       <Component {...pageProps} />
       <ToastContainer
         position="top-right"
@@ -18,6 +19,6 @@ export default function MyApp({ Component, pageProps }) {
         rtl={false}
         pauseOnFocusLoss={false}
       />
-    </>
+    </AuthProvider>
   );
 }

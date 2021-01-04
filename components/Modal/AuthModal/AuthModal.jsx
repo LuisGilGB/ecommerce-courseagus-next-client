@@ -2,6 +2,7 @@ import { Button, Form } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { logInRequest, registerUserRequest } from "../../../api/users";
+import useAuth from "../../../hooks/useAuth";
 import LoginForm from "../../Auth/LoginForm";
 import RegisterForm from "../../Auth/RegisterForm";
 import Modal from "../Modal";
@@ -38,7 +39,7 @@ const doLogIn = async (inputData) => {
   const { data } = await logInRequest(inputData);
   if (data?.jwt) {
     toast.success("Welcome!!");
-    return true;
+    return data;
   } else {
     toast.error(data?.message[0]?.messages[0]?.message || "Error at log in.");
     return false;
@@ -49,7 +50,7 @@ const doRegister = async (inputData) => {
   const { data } = await registerUserRequest(inputData);
   if (data?.jwt) {
     toast.success("User registered");
-    return true;
+    return data;
   } else {
     toast.error(
       data?.message[0]?.messages[0]?.message || "Error at registration."
@@ -62,6 +63,7 @@ const doRegister = async (inputData) => {
 const AuthModal = (props) => {
   const [registerMode, setRegisterMode] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+  const { logIn } = useAuth();
   const [loginForm] = Form.useForm();
   const [registerForm] = Form.useForm();
 
@@ -85,9 +87,10 @@ const AuthModal = (props) => {
       title: "Log in",
       onModeSwitch: onSwitchToRegister,
       onFinish: async (formData) => {
-        const success = await doLogIn(formData);
-        if (success) {
+        const res = await doLogIn(formData);
+        if (res) {
           loginForm.resetFields();
+          logIn(res.jwt);
         }
       },
     },
@@ -98,9 +101,10 @@ const AuthModal = (props) => {
       title: "Register",
       onModeSwitch: onSwitchToLogin,
       onFinish: async (formData) => {
-        const success = await doRegister(formData);
-        if (success) {
+        const res = await doRegister(formData);
+        if (res) {
           registerForm.resetFields();
+          logIn(res.jwt);
         }
       },
     },
