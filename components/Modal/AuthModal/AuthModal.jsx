@@ -1,6 +1,7 @@
 import { Button, Form } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { registerUserRequest } from "../../../api/users";
+import { toast } from "react-toastify";
+import { logInRequest, registerUserRequest } from "../../../api/users";
 import LoginForm from "../../Auth/LoginForm";
 import RegisterForm from "../../Auth/RegisterForm";
 import Modal from "../Modal";
@@ -33,6 +34,30 @@ const RegisterFooter = ({ onModeSwitch, canSubmit, onOk, ...otherProps }) => {
   );
 };
 
+const doLogIn = async (inputData) => {
+  const { data } = await logInRequest(inputData);
+  if (data?.jwt) {
+    toast.success("Welcome!!");
+    return true;
+  } else {
+    toast.error(data?.message[0]?.messages[0]?.message || "Error at log in.");
+    return false;
+  }
+};
+
+const doRegister = async (inputData) => {
+  const { data } = await registerUserRequest(inputData);
+  if (data?.jwt) {
+    toast.success("User registered");
+    return true;
+  } else {
+    toast.error(
+      data?.message[0]?.messages[0]?.message || "Error at registration."
+    );
+    return false;
+  }
+};
+
 // TODO: Try validation with a Form Provider.
 const AuthModal = (props) => {
   const [registerMode, setRegisterMode] = useState(false);
@@ -59,7 +84,12 @@ const AuthModal = (props) => {
       form: loginForm,
       title: "Log in",
       onModeSwitch: onSwitchToRegister,
-      onFinish: () => {},
+      onFinish: async (formData) => {
+        const success = await doLogIn(formData);
+        if (success) {
+          loginForm.resetFields();
+        }
+      },
     },
     REGISTER: {
       FormComponent: RegisterForm,
@@ -67,8 +97,11 @@ const AuthModal = (props) => {
       form: registerForm,
       title: "Register",
       onModeSwitch: onSwitchToLogin,
-      onFinish: (formData) => {
-        registerUserRequest(formData);
+      onFinish: async (formData) => {
+        const success = await doRegister(formData);
+        if (success) {
+          registerForm.resetFields();
+        }
       },
     },
   };

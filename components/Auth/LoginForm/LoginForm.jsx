@@ -4,9 +4,9 @@ const LoginForm = ({ form, ...otherProps }) => {
   return (
     <Form {...otherProps} form={form}>
       <Form.Item
-        name="email"
+        name="identifier"
         label="Email"
-        rules={[{ required: true, type: "email" }]}
+        rules={[{ required: true, type: "string" }]}
       >
         <Input autoComplete="off" />
       </Form.Item>
