@@ -1,35 +1,41 @@
 import { Button, Form } from "antd";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import LoginForm from "../../Auth/LoginForm";
 import RegisterForm from "../../Auth/RegisterForm";
 import Modal from "../Modal";
 
-const LoginFooter = ({ onModeSwitch, ...props }) => {
+const LoginFooter = ({ onModeSwitch, canSubmit, onOk, ...props }) => {
   return (
     <>
       <Button type="text" onClick={onModeSwitch}>
         Don't have an account?
       </Button>
       <Button>Cancel</Button>
-      <Button type="primary">Log In</Button>
+      <Button type="primary" disabled={!canSubmit} onClick={onOk}>
+        Log In
+      </Button>
     </>
   );
 };
 
-const RegisterFooter = ({ onModeSwitch, ...otherProps }) => {
+const RegisterFooter = ({ onModeSwitch, canSubmit, onOk, ...otherProps }) => {
   return (
     <>
       <Button type="text" onClick={onModeSwitch}>
         Already have an account?
       </Button>
       <Button>Cancel</Button>
-      <Button type="primary">Register</Button>
+      <Button type="primary" disabled={!canSubmit} onClick={onOk}>
+        Register
+      </Button>
     </>
   );
 };
 
+// TODO: Try validation with a Form Provider.
 const AuthModal = (props) => {
   const [registerMode, setRegisterMode] = useState(false);
+  const [canSubmit, setCanSubmit] = useState(false);
   const [loginForm] = Form.useForm();
   const [registerForm] = Form.useForm();
 
@@ -66,9 +72,42 @@ const AuthModal = (props) => {
     <Modal
       {...props}
       title={title}
-      footer={<FooterComponent onModeSwitch={onModeSwitch} />}
+      footer={
+        <FooterComponent
+          onModeSwitch={onModeSwitch}
+          canSubmit={canSubmit}
+          onOk={() => {
+            form.submit();
+          }}
+        />
+      }
     >
-      {<FormComponent form={form} />}
+      <FormComponent
+        form={form}
+        onValuesChange={() => {
+          /*
+            This approach is ugly and looks antipattern, but it's the only
+            way I've found to trigger a new validation to update submit button
+            state due to form updates not triggering a new render of this Modal
+            component.
+            
+            The setTimeout is used because of the outOfDate: true issue (the
+            validation of valid data returns an error because it sets an outOfDate
+            set as true if called before listener's execution end).
+          */
+          setTimeout(() => {
+            form
+              .validateFields()
+              .then(() => {
+                setCanSubmit(true);
+              })
+              .catch((err) => {
+                setCanSubmit(false);
+              });
+          });
+        }}
+        onFinish={(data) => {}}
+      />
     </Modal>
   );
 };
