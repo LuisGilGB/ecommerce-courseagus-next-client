@@ -40,12 +40,16 @@ const AuthModal = (props) => {
   const [registerForm] = Form.useForm();
 
   const onSwitchToLogin = useCallback(() => {
+    setCanSubmit(false);
     setRegisterMode(false);
-  }, []);
+    registerForm.resetFields();
+  }, [loginForm]);
 
   const onSwitchToRegister = useCallback(() => {
+    setCanSubmit(false);
     setRegisterMode(true);
-  }, []);
+    loginForm.resetFields();
+  }, [registerForm]);
 
   const CONFIG = {
     LOGIN: {
