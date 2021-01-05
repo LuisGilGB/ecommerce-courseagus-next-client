@@ -23,7 +23,7 @@ export const logInRequest = async (userData) => {
   }
 };
 
-export const resetPasswordRequest = async (email) => {
+export const forgotPasswordRequest = async (email) => {
   try {
     const url = `${SERVER_HOST}/auth/forgot-password`;
     const res = await axios.post(url, { email });

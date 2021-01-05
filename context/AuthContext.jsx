@@ -1,6 +1,7 @@
 import { createContext, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import jwtDecode from "jwt-decode";
-import { getToken, setToken } from "../utils/token";
+import { getToken, removeToken, setToken } from "../utils/token";
 
 export const AuthContext = createContext({
   auth: undefined,
@@ -11,6 +12,7 @@ export const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(undefined);
+  const router = useRouter();
 
   const setAuthFromToken = (token) => {
     setAuth({
@@ -24,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       setAuthFromToken(token);
     } else {
-      setAuth(undefined);
+      setAuth(null);
     }
   }, []);
 
@@ -33,12 +35,19 @@ export const AuthProvider = ({ children }) => {
     setAuthFromToken(token);
   };
 
+  const logOut = () => {
+    router.push("/");
+    removeToken();
+    setAuth(null);
+  };
+
   const value = useMemo(
     () => ({
       auth,
       logIn,
+      logOut,
     }),
-    [auth, logIn]
+    [auth, logIn, logOut]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
