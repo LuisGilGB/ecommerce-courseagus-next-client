@@ -7,28 +7,60 @@ import LoginForm from "../../Auth/LoginForm";
 import RegisterForm from "../../Auth/RegisterForm";
 import Modal from "../Modal";
 
-const LoginFooter = ({ onModeSwitch, canSubmit, onOk, ...props }) => {
+const LoginFooter = ({
+  form,
+  onModeSwitch,
+  canSubmit,
+  okLoading,
+  onOk,
+  onCancel,
+}) => {
   return (
     <>
       <Button type="text" onClick={onModeSwitch}>
         Don't have an account?
       </Button>
-      <Button>Cancel</Button>
-      <Button type="primary" disabled={!canSubmit} onClick={onOk}>
+      <Button htmlType="reset" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button
+        form={form}
+        type="primary"
+        htmlType="submit"
+        disabled={!canSubmit}
+        loading={okLoading}
+        onClick={onOk}
+      >
         Log In
       </Button>
     </>
   );
 };
 
-const RegisterFooter = ({ onModeSwitch, canSubmit, onOk, ...otherProps }) => {
+const RegisterFooter = ({
+  form,
+  onModeSwitch,
+  canSubmit,
+  okLoading,
+  onOk,
+  onCancel,
+}) => {
   return (
     <>
       <Button type="text" onClick={onModeSwitch}>
         Already have an account?
       </Button>
-      <Button>Cancel</Button>
-      <Button type="primary" disabled={!canSubmit} onClick={onOk}>
+      <Button htmlType="reset" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button
+        form={form}
+        type="primary"
+        htmlType="submit"
+        disabled={!canSubmit}
+        loading={okLoading}
+        onClick={onOk}
+      >
         Register
       </Button>
     </>
@@ -60,9 +92,10 @@ const doRegister = async (inputData) => {
 };
 
 // TODO: Try validation with a Form Provider.
-const AuthModal = (props) => {
+const AuthModal = ({ onCancel, onSubmitDone, ...otherProps }) => {
   const [registerMode, setRegisterMode] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const { logIn } = useAuth();
   const [loginForm] = Form.useForm();
   const [registerForm] = Form.useForm();
@@ -87,11 +120,14 @@ const AuthModal = (props) => {
       title: "Log in",
       onModeSwitch: onSwitchToRegister,
       onFinish: async (formData) => {
+        setSubmitLoading(true);
         const res = await doLogIn(formData);
         if (res) {
-          loginForm.resetFields();
           logIn(res.jwt);
+          loginForm.resetFields();
+          onSubmitDone();
         }
+        setSubmitLoading(false);
       },
     },
     REGISTER: {
@@ -101,11 +137,14 @@ const AuthModal = (props) => {
       title: "Register",
       onModeSwitch: onSwitchToLogin,
       onFinish: async (formData) => {
+        setSubmitLoading(true);
         const res = await doRegister(formData);
         if (res) {
-          registerForm.resetFields();
           logIn(res.jwt);
+          registerForm.resetFields();
+          onSubmitDone();
         }
+        setSubmitLoading(false);
       },
     },
   };
@@ -121,14 +160,20 @@ const AuthModal = (props) => {
 
   return (
     <Modal
-      {...props}
+      {...otherProps}
       title={title}
       footer={
         <FooterComponent
-          onModeSwitch={onModeSwitch}
+          form={form}
           canSubmit={canSubmit}
+          okLoading={submitLoading}
+          onModeSwitch={onModeSwitch}
           onOk={() => {
             form.submit();
+          }}
+          onCancel={() => {
+            onCancel();
+            form.resetFields();
           }}
         />
       }

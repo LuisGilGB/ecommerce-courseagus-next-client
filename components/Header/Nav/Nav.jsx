@@ -64,6 +64,9 @@ const Nav = () => {
         onCancel={() => {
           setLoginModalVisible(false);
         }}
+        onSubmitDone={() => {
+          setLoginModalVisible(false);
+        }}
       />
     </>
   );

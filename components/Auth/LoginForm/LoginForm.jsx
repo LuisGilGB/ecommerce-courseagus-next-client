@@ -10,7 +10,11 @@ const LoginForm = ({ form, ...otherProps }) => {
       >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="password" label="Password" rules={[{ required: true }]}>
+      <Form.Item
+        name="password"
+        label="Password"
+        rules={[{ required: true, min: 4 }]}
+      >
         <Input.Password />
       </Form.Item>
     </Form>

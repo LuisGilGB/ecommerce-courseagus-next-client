@@ -16,7 +16,7 @@ const RegisterForm = ({ form, ...otherProps }) => {
       <Form.Item
         name="username"
         label="User name"
-        rules={[{ required: true, type: "string" }]}
+        rules={[{ required: true, type: "string", min: 4 }]}
       >
         <Input autoComplete="off" />
       </Form.Item>
@@ -27,7 +27,11 @@ const RegisterForm = ({ form, ...otherProps }) => {
       >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="password" label="Password" rules={[{ required: true }]}>
+      <Form.Item
+        name="password"
+        label="Password"
+        rules={[{ required: true, min: 4 }]}
+      >
         <Input.Password />
       </Form.Item>
     </Form>
