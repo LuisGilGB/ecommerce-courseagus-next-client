@@ -1,8 +1,9 @@
 import { Col, Menu, Row } from "antd";
 import Link from "next/link";
-import { UserOutlined } from "@ant-design/icons";
+import { LoginOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import AuthModal from "../../Modal/AuthModal";
+import useAuth from "../../../hooks/useAuth";
 
 const NavMenu = (props) => {
   return (
@@ -31,6 +32,7 @@ const NavItem = ({ to, href, children, ...otherProps }) => {
 
 const Nav = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const { auth, logOut } = useAuth();
 
   return (
     <>
@@ -45,14 +47,30 @@ const Nav = () => {
         </Col>
         <Col>
           <NavMenu mode="horizontal">
-            <NavItem
-              icon={<UserOutlined />}
-              onClick={() => {
-                setLoginModalVisible(!loginModalVisible);
-              }}
-            >
-              User login
-            </NavItem>
+            {auth ? (
+              <>
+                <NavItem key="current-user" icon={<UserOutlined />}>
+                  Current user
+                </NavItem>
+                <NavItem
+                  key="logout"
+                  icon={<LogoutOutlined />}
+                  onClick={logOut}
+                >
+                  Logout
+                </NavItem>
+              </>
+            ) : (
+              <NavItem
+                key="auth"
+                icon={<LoginOutlined />}
+                onClick={() => {
+                  setLoginModalVisible(!loginModalVisible);
+                }}
+              >
+                User login
+              </NavItem>
+            )}
           </NavMenu>
         </Col>
       </Row>
