@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import "antd/dist/antd.css";
 import "../scss/global.scss";
 import "react-toastify/dist/ReactToastify.css";

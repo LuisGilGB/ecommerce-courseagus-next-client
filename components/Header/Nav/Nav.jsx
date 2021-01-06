@@ -5,30 +5,26 @@ import { useState } from "react";
 import AuthModal from "../../Modal/AuthModal";
 import useAuth from "../../../hooks/useAuth";
 
-const NavMenu = (props) => {
-  return (
-    <Menu
-      {...props}
-      forceSubMenuRender={false}
-      mode="horizontal"
-      className="menu"
-    />
-  );
-};
+const NavMenu = props => (
+  <Menu
+    {...props}
+    forceSubMenuRender={false}
+    mode="horizontal"
+    className="menu"
+  />
+);
 
-const NavItem = ({ to, href, children, ...otherProps }) => {
-  return (
-    <Menu.Item {...otherProps} className="menu-item">
-      {to || href ? (
-        <Link href={to || href}>
-          <a>{children}</a>
-        </Link>
-      ) : (
-        children
-      )}
-    </Menu.Item>
-  );
-};
+const NavItem = ({ to, href, children, ...otherProps }) => (
+  <Menu.Item {...otherProps} className="menu-item">
+    {to || href ? (
+      <Link href={to || href}>
+        <a>{children}</a>
+      </Link>
+    ) : (
+      children
+    )}
+  </Menu.Item>
+);
 
 const Nav = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);

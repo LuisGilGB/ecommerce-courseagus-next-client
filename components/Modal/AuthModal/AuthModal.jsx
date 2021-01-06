@@ -1,4 +1,4 @@
-import { Button, Form } from "antd";
+import { Form } from "antd";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import { logInRequest, registerUserRequest } from "../../../api/users";
@@ -8,28 +8,26 @@ import RegisterForm from "../../Auth/RegisterForm";
 import Modal from "../Modal";
 import { LoginFooter, RegisterFooter } from "./footers";
 
-const doLogIn = async (inputData) => {
+const doLogIn = async inputData => {
   const { data } = await logInRequest(inputData);
   if (data?.jwt) {
     toast.success("Welcome!!");
     return data;
-  } else {
-    toast.error(data?.message[0]?.messages[0]?.message || "Error at log in.");
-    return false;
   }
+  toast.error(data?.message[0]?.messages[0]?.message || "Error at log in.");
+  return false;
 };
 
-const doRegister = async (inputData) => {
+const doRegister = async inputData => {
   const { data } = await registerUserRequest(inputData);
   if (data?.jwt) {
     toast.success("User registered");
     return data;
-  } else {
-    toast.error(
-      data?.message[0]?.messages[0]?.message || "Error at registration."
-    );
-    return false;
   }
+  toast.error(
+    data?.message[0]?.messages[0]?.message || "Error at registration."
+  );
+  return false;
 };
 
 // TODO: Try validation with a Form Provider.
@@ -60,7 +58,7 @@ const AuthModal = ({ onCancel, onSubmitDone, ...otherProps }) => {
       form: loginForm,
       title: "Log in",
       onModeSwitch: onSwitchToRegister,
-      onFinish: async (formData) => {
+      onFinish: async formData => {
         setSubmitLoading(true);
         const res = await doLogIn(formData);
         if (res) {
@@ -77,7 +75,7 @@ const AuthModal = ({ onCancel, onSubmitDone, ...otherProps }) => {
       form: registerForm,
       title: "Register",
       onModeSwitch: onSwitchToLogin,
-      onFinish: async (formData) => {
+      onFinish: async formData => {
         setSubmitLoading(true);
         const res = await doRegister(formData);
         if (res) {
@@ -138,7 +136,7 @@ const AuthModal = ({ onCancel, onSubmitDone, ...otherProps }) => {
               .then(() => {
                 setCanSubmit(true);
               })
-              .catch((err) => {
+              .catch(() => {
                 setCanSubmit(false);
               });
           });

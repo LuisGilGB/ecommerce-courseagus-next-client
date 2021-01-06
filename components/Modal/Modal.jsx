@@ -1,7 +1,5 @@
 import { Modal as AntModal } from "antd";
 
-const Modal = (props) => {
-  return <AntModal {...props} />;
-};
+const Modal = props => <AntModal {...props} />;
 
 export default Modal;

@@ -4,13 +4,11 @@ import Nav from "./Nav/Nav";
 
 const { Header: AntHeader } = Layout;
 
-const Header = () => {
-  return (
-    <AntHeader className="header">
-      <TopBar />
-      <Nav />
-    </AntHeader>
-  );
-};
+const Header = () => (
+  <AntHeader className="header">
+    <TopBar />
+    <Nav />
+  </AntHeader>
+);
 
 export default Header;
