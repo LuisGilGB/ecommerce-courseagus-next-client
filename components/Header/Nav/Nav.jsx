@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { Col, Menu, Row } from "antd";
 import Link from "next/link";
 import { LoginOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { useState } from "react";
 import AuthModal from "../../Modal/AuthModal";
 import useAuth from "../../../hooks/useAuth";
 
@@ -45,7 +45,11 @@ const Nav = () => {
           <NavMenu mode="horizontal">
             {auth ? (
               <>
-                <NavItem key="current-user" icon={<UserOutlined />}>
+                <NavItem
+                  key="current-user"
+                  href="/account"
+                  icon={<UserOutlined />}
+                >
                   Current user
                 </NavItem>
                 <NavItem
