@@ -1,5 +1,6 @@
 import axios from "axios";
 import { SERVER_HOST } from "../utils/consts";
+import { tokenizedRequest } from "../utils/requests";
 
 export const registerUserRequest = async userData => {
   try {
@@ -29,4 +30,9 @@ export const forgotPasswordRequest = async email => {
   } catch (err) {
     return err.response;
   }
+};
+
+export const getMeRequest = async () => {
+  const url = `${SERVER_HOST}/users/me`;
+  return await tokenizedRequest(url, { method: "GET" });
 };
