@@ -11,6 +11,7 @@ const Logo = () => (
         className="logo-image"
         alt="Gaming logo"
         width={140}
+        preview={false}
       />
     </a>
   </Link>

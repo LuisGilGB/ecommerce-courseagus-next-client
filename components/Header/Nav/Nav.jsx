@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Col, Menu, Row } from "antd";
 import Link from "next/link";
 import { LoginOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import AuthModal from "../../Modal/AuthModal";
 import useAuth from "../../../hooks/useAuth";
+import { PlatformsContext } from "../../../context/PlatformsContext";
 
 const NavMenu = props => (
   <Menu
@@ -29,16 +30,18 @@ const NavItem = ({ to, href, children, ...otherProps }) => (
 const Nav = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const { auth, logOut } = useAuth();
+  const { platforms = [] } = useContext(PlatformsContext);
 
   return (
     <>
       <Row className="nav" justify="space-between">
         <Col>
           <NavMenu mode="horizontal">
-            <NavItem href="/playstation">PlayStation</NavItem>
-            <NavItem href="/xbox">Xbox</NavItem>
-            <NavItem href="/switch">Switch</NavItem>
-            <NavItem href="/pc">PC</NavItem>
+            {platforms.map(p => (
+              <NavItem key={p.pathname} href={`/games/${p.pathname}`}>
+                {p.shortName}
+              </NavItem>
+            ))}
           </NavMenu>
         </Col>
         <Col>
